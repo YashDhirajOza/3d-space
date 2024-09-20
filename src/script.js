@@ -55,17 +55,43 @@ function setupControls() {
 }
 
 function setupAudio() {
+  // Create an AudioListener and add it to the camera
   audioListener = new THREE.AudioListener();
   camera.add(audioListener);
 
+  // Create a global audio source
   backgroundMusic = new THREE.Audio(audioListener);
-  audioLoader = new THREE.AudioLoader();
 
-  audioLoader.load('interstellar.mp3', function(buffer) {
-    backgroundMusic.setBuffer(buffer);
-    backgroundMusic.setLoop(true);
-    backgroundMusic.setVolume(0.5);
-  });
+  // Load a sound and set it as the Audio object's buffer
+  audioLoader = new THREE.AudioLoader();
+  audioLoader.load(
+    'interstellar.mp3',
+    function(buffer) {
+      backgroundMusic.setBuffer(buffer);
+      backgroundMusic.setLoop(true);
+      backgroundMusic.setVolume(0.5);
+      console.log('Audio loaded successfully');
+    },
+    function(xhr) {
+      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    function(error) {
+      console.error('An error occurred while loading audio:', error);
+    }
+  );
+
+  // Add event listener to play audio on user interaction
+  document.addEventListener('click', function() {
+    if (backgroundMusic.buffer && !backgroundMusic.isPlaying) {
+      backgroundMusic.play();
+      console.log('Background music started playing');
+    }
+  }, { once: true });
+
+  // Log audio context state changes
+  audioListener.context.onstatechange = function() {
+    console.log('Audio context state:', audioListener.context.state);
+  };
 }
 
 function generateGalaxy() {
@@ -295,7 +321,7 @@ function transitionToSolarSystem() {
       requestAnimationFrame(animateCamera);
     } else {
       setTimeout(() => {
-        window.location.href = 'https://yashdhirajoza.github.io/solar-pt2/';
+        window.location.href = 'hhttps://kylegough.github.io/solar-system/';
       }, 1000);
     }
   }
@@ -303,7 +329,6 @@ function transitionToSolarSystem() {
   requestAnimationFrame(animateCamera);
 }
 
-// ... (previous code remains the same)
 
 function setupGUI() {
   const gui = new GUI({ width: 340 });
