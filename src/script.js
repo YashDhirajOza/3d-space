@@ -321,7 +321,7 @@ function transitionToSolarSystem() {
       requestAnimationFrame(animateCamera);
     } else {
       setTimeout(() => {
-        window.location.href = 'https://kylegough.github.io/solar-system/';
+        window.location.href = 'https://yashdhirajoza.github.io/solar-pt2/';
       }, 1000);
     }
   }
